@@ -131,3 +131,36 @@ describe("properties destructured in a function definition", () => {
     );
   });
 });
+
+describe("adding any to optional arguments", () => {
+  const filename =
+    "@clubhouse/web/components/settings/manage-billing/UpgradeToStandardDialog.tsx";
+  const line = "  onConfirm?: (args?: object, coupon_code?) => void;";
+  const lineNumber = 183;
+  const fileContents: string[] = [];
+  fileContents[lineNumber - 1] = line;
+  let edit: Edit;
+
+  beforeAll(() => {
+    debugger;
+    edit = parameterImplicitlyHasAnAnyType({
+      filename,
+      fileContents,
+      lineNumber,
+      errorCode: "TS7006",
+      errorString: `Parameter 'coupon_code' implicitly has an 'any' type.`,
+      column: 31,
+      numInserted: 0,
+    });
+  });
+
+  it("should return a splice", () => {
+    expect(isSplice(edit)).toBeTruthy();
+  });
+
+  it("should splice the : any AFTER the question mark", () => {
+    expect(splice(line, edit as Splice)).toBe(
+      "  onConfirm?: (args?: object, coupon_code?: any) => void;"
+    );
+  });
+});

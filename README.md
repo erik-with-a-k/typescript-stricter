@@ -32,3 +32,8 @@ Attach to debugger:
 yarn test:debug
 // Then open chrome:inspect and hit play
 ```
+Run a specific test:
+```
+yarn test -t="adding any to optional arguments"
+yarn test:debug -t="adding any to optional arguments"
+```

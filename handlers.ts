@@ -28,7 +28,10 @@ export function parameterImplicitlyHasAnAnyType({
   const [, parameter, type] = match;
   const line = fileContents[lineNumber - 1];
   if (type === "any") {
-    const splitPoint = column + numInserted + parameter.length - 1;
+    let splitPoint = column + numInserted + parameter.length - 1;
+    if (line[splitPoint] === "?") {
+      splitPoint++;
+    }
     return {
       lineNumber,
       splitPoint,
