@@ -13,6 +13,8 @@ yarn fix --tsc=TYPCHECK001 --repo=/path/to/your/typescript/prokect
 
 ### Debugging
 
+If something isn't working properly, you may want to throw some `debugger` calls in `fix.ts` or in `handler.ts` and then run with the debugger:
+
 ```
 yarn fix:debug --tsc=TYPCHECK001 --repo=/path/to/your/typescript/prokect
 // Then open chrome:inspect and hit play
