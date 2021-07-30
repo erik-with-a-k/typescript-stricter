@@ -8,5 +8,27 @@ cd /path/to/your/typescript/project
 tsc >> /path/to/typescript-stricter/TYPECHECK001
 cd /path/to/typescript-stricter
 yarn
-yarn ts-node fix.ts
+yarn fix
+```
+
+### Debugging
+
+```
+yarn fix:debug
+// Then open chrome:inspect and hit play
+```
+
+### Running tests
+
+```
+yarn test
+```
+In watch mode:
+```
+yarn test:watch
+```
+Attach to debugger:
+```
+yarn test:debug
+// Then open chrome:inspect and hit play
 ```
