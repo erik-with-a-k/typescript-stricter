@@ -6,18 +6,29 @@ import {
   bindingElementImplicitlyHasAnAnyType,
 } from "./handlers";
 
-const issues = readFileSync("./TYPECHECK2").toString().split("\n");
+const [, , issueFile, pathToRepo] = process.argv;
 
-if (!process.argv[2]) {
+if (!issueFile) {
   throw new Error(
-    "You need to provide a base path, like:\n  node fix /path/to/repo"
+    "You need to provide a tsc dump, like:\n  node fix TYPECHECK000 /path/to/repo"
   );
 }
-const BASE_PATH = process.argv[2].replace(/\/$/, "");
+
+if (!pathToRepo) {
+  throw new Error(
+    "You need to provide a base path, like:\n  node fix TYPECHECK000 /path/to/repo"
+  );
+}
+
+console.log({ issueFile, pathToRepo });
+
+const issues = readFileSync(issueFile).toString().split("\n");
+
+const BASE_PATH = pathToRepo.replace(/\/$/, "");
 
 const ERROR_HANDLERS: ErrorHandler[] = [
   parameterImplicitlyHasAnAnyType,
-  bindingElementImplicitlyHasAnAnyType,
+  // bindingElementImplicitlyHasAnAnyType,
 ];
 
 let isDirty = false;
@@ -80,7 +91,7 @@ issues.forEach((issue) => {
       );
     }
     if (isReplacement(edit)) {
-      fileContents[edit.lineNumber - 1] = line.replace(edit.replace, edit.with);
+      fileContents[lineIndex] = line.replace(edit.replace, edit.with);
       console.log(
         `${filename}: ${handler.name} replaced /${edit.replace}/ with "${edit.with}" on line ${edit.lineNumber}\n  Before: ${line}\n  After: ${fileContents[lineIndex]}`
       );

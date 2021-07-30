@@ -1,8 +1,89 @@
-import { bindingElementImplicitlyHasAnAnyType } from "./handlers";
+import {
+  bindingElementImplicitlyHasAnAnyType,
+  parameterImplicitlyHasAnAnyType,
+} from "./handlers";
 import { splice } from "./cut";
-import { Splice, isSplice } from "./types";
+import { Splice, isSplice, Edit } from "./types";
 
-describe("properties destructured from a function argument definition", () => {
+describe("two untyped arguments in a function definition", () => {
+  const filename = "@clubhouse/feature-toggles/index.ts";
+  const lineNumber = 85;
+  const line =
+    "export const generateLDUserFromCHUser = (user, currentOrgData) => {";
+  const fileContents: string[] = [];
+  fileContents[lineNumber - 1] = line;
+  const LENGTH_OF_INSERT = ": any".length;
+
+  const baseErrorDetails = {
+    filename,
+    lineNumber,
+    fileContents,
+    errorCode: "TS7006",
+  } as const;
+
+  describe("fixing the first argument", () => {
+    let userEdit: Edit;
+    let lineWithFirstSplice: string;
+    beforeAll(() => {
+      debugger;
+      userEdit = parameterImplicitlyHasAnAnyType({
+        ...baseErrorDetails,
+        errorString: `Parameter 'user' implicitly has an 'any' type.`,
+        column: 42,
+        numInserted: 0,
+      });
+      if (isSplice(userEdit)) {
+        lineWithFirstSplice = splice(line, userEdit);
+      }
+    });
+
+    it("should return a splice", () => {
+      expect(isSplice(userEdit)).toBeTruthy();
+    });
+
+    it("should splice an `: any` after `user`", () => {
+      if (!isSplice(userEdit)) return;
+      expect(lineWithFirstSplice).toEqual(
+        "export const generateLDUserFromCHUser = (user: any, currentOrgData) => {"
+      );
+      expect(lineWithFirstSplice.length - line.length).toEqual(
+        LENGTH_OF_INSERT
+      );
+    });
+
+    describe("and then the fixing the second argument", () => {
+      let currentOrgDataEdit: Edit;
+      beforeAll(() => {
+        currentOrgDataEdit = parameterImplicitlyHasAnAnyType({
+          ...baseErrorDetails,
+          errorString: `Parameter 'currentOrgData' implicitly has an 'any' type.`,
+          column: 48,
+          numInserted: LENGTH_OF_INSERT,
+        });
+      });
+
+      it("should return a splice", () => {
+        expect(isSplice(currentOrgDataEdit)).toBeTruthy();
+      });
+
+      it("should splice an `: any` after `user`", () => {
+        if (!isSplice(currentOrgDataEdit)) return;
+        const lineWithSecondSplice = splice(
+          lineWithFirstSplice,
+          currentOrgDataEdit
+        );
+        expect(lineWithSecondSplice).toEqual(
+          "export const generateLDUserFromCHUser = (user: any, currentOrgData: any) => {"
+        );
+        expect(
+          lineWithSecondSplice.length - lineWithFirstSplice.length
+        ).toEqual(LENGTH_OF_INSERT);
+      });
+    });
+  });
+});
+
+describe("properties destructured in a function definition", () => {
   const fileContents: string[] = [];
   const lineNumber = 95;
   const line = "const getPermission = ({ user, slimWorkspace }) => {";

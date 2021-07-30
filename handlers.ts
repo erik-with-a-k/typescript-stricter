@@ -32,7 +32,7 @@ export function parameterImplicitlyHasAnAnyType({
     return {
       lineNumber,
       splitPoint,
-      text: ":any",
+      text: ": any",
     };
   }
 }

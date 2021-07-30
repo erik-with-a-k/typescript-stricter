@@ -5,10 +5,11 @@
         "@types/node": "*",
         "jest": "*",
         "@types/jest": "*",
-        "ts-jest": "*"
+        "ts-jest": "*",
+        "ts-node": "*"
     },
     "scripts": {
-        "fix": "yarn tsc; node fix.js /Users/erik/x/node-app/",
+        "fix": "ts-node fix.js",
         "fix:debug": "yarn tsc; node --inspect-brk fix.js /Users/erik/x/node-app/",
         "test": "jest",
         "test:watch": "jest --watch",
