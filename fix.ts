@@ -42,6 +42,8 @@ function isLoaded(
   return Boolean(fileContents);
 }
 
+let numInsertedByLineNumber: Record<number, number> = {};
+
 issues.forEach((issue) => {
   const match = issue.match(
     /^([^(]+)\(([0-9]+),([0-9]+)\): error (TS[0-9]+): (.*)$/
@@ -55,7 +57,6 @@ issues.forEach((issue) => {
     match;
   const lineNumber = parseInt(lineNumberString);
   const column = parseInt(columnString);
-  const numInsertedByLineNumber: Record<number, number> = {};
 
   if (loadedFilename !== filename && fileContents) {
     if (isDirty) save(fileContents, BASE_PATH + "/" + loadedFilename);
@@ -67,6 +68,7 @@ issues.forEach((issue) => {
       .split("\n");
     loadedFilename = filename;
     isDirty = false;
+    numInsertedByLineNumber = {};
   }
 
   ERROR_HANDLERS.forEach((handler) => {
@@ -107,7 +109,6 @@ issues.forEach((issue) => {
   if (!isDirty) {
     const line = fileContents[lineNumber - 1];
     console.log(`Issue not handled: ${issue}\n  ${line}`);
-    debugger;
   }
 });
 
