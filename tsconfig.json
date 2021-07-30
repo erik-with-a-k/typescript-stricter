@@ -1,0 +1,9 @@
+{
+    "sources": [
+        "fix.ts"
+    ],
+    "compilerOptions": {
+      "sourceMap": true
+    },
+    "outDir": "build"
+}

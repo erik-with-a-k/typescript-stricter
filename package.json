@@ -1,7 +1,17 @@
 {
     "dependencies": {
-        "ts-node": "*",
+        "typescript": "*",
+        "tsc": "*",
         "@types/node": "*",
-        "typescript": "*"
+        "jest": "*",
+        "@types/jest": "*",
+        "ts-jest": "*"
+    },
+    "scripts": {
+        "fix": "yarn tsc; node fix.js /Users/erik/x/node-app/",
+        "fix:debug": "yarn tsc; node --inspect-brk fix.js /Users/erik/x/node-app/",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
     }
 }
