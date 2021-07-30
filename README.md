@@ -8,13 +8,13 @@ cd /path/to/your/typescript/project
 tsc >> /path/to/typescript-stricter/TYPECHECK001
 cd /path/to/typescript-stricter
 yarn
-yarn fix
+yarn fix --tsc=TYPCHECK001 --repo=/path/to/your/typescript/prokect
 ```
 
 ### Debugging
 
 ```
-yarn fix:debug
+yarn fix:debug --tsc=TYPCHECK001 --repo=/path/to/your/typescript/prokect
 // Then open chrome:inspect and hit play
 ```
 

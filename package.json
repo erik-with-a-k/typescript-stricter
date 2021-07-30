@@ -6,11 +6,13 @@
         "jest": "*",
         "@types/jest": "*",
         "ts-jest": "*",
-        "ts-node": "*"
+        "ts-node": "*",
+        "minimist": "*",
+        "@types/minimist": "*"
     },
     "scripts": {
-        "fix": "ts-node fix.js",
-        "fix:debug": "yarn tsc; node --inspect-brk fix.js /Users/erik/x/node-app/",
+        "fix": "ts-node fix.ts",
+        "fix:debug": "yarn tsc && node --inspect-brk build/fix.js",
         "test": "jest",
         "test:watch": "jest --watch",
         "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"

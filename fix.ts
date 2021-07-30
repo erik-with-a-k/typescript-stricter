@@ -5,24 +5,25 @@ import {
   parameterImplicitlyHasAnAnyType,
   bindingElementImplicitlyHasAnAnyType,
 } from "./handlers";
+import * as minimist from "minimist";
 
-const [, , issueFile, pathToRepo] = process.argv;
+const { tsc: tscDumpFile, repo: pathToRepo } = minimist(process.argv.slice(2));
 
-if (!issueFile) {
+if (!tscDumpFile) {
   throw new Error(
-    "You need to provide a tsc dump, like:\n  node fix TYPECHECK000 /path/to/repo"
+    "You must provide a path to a tsc dump, E.g.: yarn fix --tsc=TYPECHECK000"
   );
 }
 
 if (!pathToRepo) {
   throw new Error(
-    "You need to provide a base path, like:\n  node fix TYPECHECK000 /path/to/repo"
+    "You must provide a path to the repo tsc ran in, E.g.: yarn fix --repo=/path/to/repo"
   );
 }
 
-console.log({ issueFile, pathToRepo });
+console.log({ tscDumpFile, pathToRepo });
 
-const issues = readFileSync(issueFile).toString().split("\n");
+const issues = readFileSync(tscDumpFile).toString().split("\n");
 
 const BASE_PATH = pathToRepo.replace(/\/$/, "");
 

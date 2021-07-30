@@ -3,8 +3,7 @@
         "fix.ts"
     ],
     "compilerOptions": {
-      "sourceMap": true
+      "sourceMap": true,
+      "outDir": "build"
     },
-    "rootDir": ".",
-    "outDir": "build"
 }
